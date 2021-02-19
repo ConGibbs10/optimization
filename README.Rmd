@@ -145,7 +145,7 @@ df <- data.frame(
                       scientific = FALSE)
 )
 
-gt(df)
+pander::pandoc.table(df)
 ```
 
 Every method approximates the root to the same precision as `uniroot()`.
