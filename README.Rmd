@@ -66,7 +66,7 @@ d2ll <- function(theta){
 fi <- function(theta){1/2}
 ```
 
-Let's take a look at the log-likelihood.
+Let's take a look at the derivative of the log-likelihood.
 
 ```{r}
 vd1ll <- Vectorize(d1ll)
