@@ -1,13 +1,13 @@
 Package: optimization
-Title: What the Package Does (One Line, Title Case)
+Title: Tools for Root Finding
 Version: 0.0.0.9000
 Authors@R: 
-    person(given = "First",
-           family = "Last",
+    person(given = "Connor",
+           family = "Gibbs",
            role = c("aut", "cre"),
-           email = "first.last@example.com",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+           email = "connor.gibbs@colostate.edu",
+           comment = c(ORCID = "https://orcid.org/0000-0002-8852-5594"))
+Description: In this package, I provide a host of numerical optimization techniques used for root finding. The iterative procedures are coded using `Rcpp` to speed up computation time. Over time, I hope to expand this to include multivariate root finding. 
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
