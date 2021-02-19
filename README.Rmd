@@ -1,5 +1,20 @@
+---
+output: github_document
+---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+library(tidyverse)
+library(gt)
+devtools::load_all()
+```
 
 # optimization
 
@@ -10,26 +25,18 @@ The goal of optimization is to provided functions for finding roots.
 
 ## Installation
 
-Install this package from GitHub. You will need to install `devtools` if
-you do not already have it.
+Install this package from GitHub. You will need to install `devtools` if you do not already have it.
 
-``` r
+```{r}
 # install.packages('devtools')
 devtools::install_github('ConGibbs10/optimization')
-#> Skipping install of 'optimization' from a github remote, the SHA1 (1ed56082) has not changed since last install.
-#>   Use `force = TRUE` to force installation
 ```
 
 ## Example
 
-This is a basic example which shows you how to find roots with
-`optimization`. Suppose
-*X*<sub>1</sub>, …, *X*<sub>25</sub> ∼ Cauchy(*θ*, 1). Then, one can
-derive the log-likelihood and its first and second derivatives.
-Furthermore, one can derive the Fisher information. These functions,
-univariate in theta, are coded in `R` below.
+This is a basic example which shows you how to find roots with `optimization`. Suppose $X_1, \dots, X_{25}\sim \text{Cauchy}(\theta, 1)$. Then, one can derive the log-likelihood and its first and second derivatives. Furthermore, one can derive the Fisher information. These functions, univariate in theta, are coded in `R` below.
 
-``` r
+```{r}
 library(optimization)
 
 # log-likelihood
@@ -59,9 +66,9 @@ d2ll <- function(theta){
 fi <- function(theta){1/2}
 ```
 
-Let’s take a look at the log-likelihood.
+Let's take a look at the log-likelihood.
 
-``` r
+```{r}
 vd1ll <- Vectorize(d1ll)
 root <- uniroot(vd1ll, lower = -5, upper = 5)$root
 ggplot(data = data.frame(x = 0), aes(x = x)) +
@@ -76,14 +83,11 @@ ggplot(data = data.frame(x = 0), aes(x = x)) +
   theme_bw()
 ```
 
-<img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
-
-I’ll now demonstrate how to find the root with each of the included
-numerical methods.
+I'll now demonstrate how to find the root with each of the included numerical methods.
 
 ### Bisection
 
-``` r
+```{r}
 mresults <- list()
 mresults$bisection <- 
   unibisection(gp = d1ll,          # derivative of log-likelihood
@@ -95,7 +99,7 @@ mresults$bisection <-
 
 ### Secant
 
-``` r
+```{r}
 mresults$secant <- 
   unisecant(gp = d1ll,        # derivative of log-likelihood
             a = 0,            # left endpoint
@@ -106,7 +110,7 @@ mresults$secant <-
 
 ### Newton-Raphson
 
-``` r
+```{r}
 mresults$newton <- 
   uninewton(gp = d1ll,        # derivative of log-likelihood
             gpp = d2ll,       # second derivative of log-likelihood
@@ -117,7 +121,7 @@ mresults$newton <-
 
 ### Fisher Scoring
 
-``` r
+```{r}
 mresults$fisher <- 
   unifisher(lp = d1ll,        # derivative of log-likelihood
             fisherInfo = fi,  # fisher information
@@ -129,10 +133,9 @@ mresults$fisher <-
 
 ## Results
 
-After approximating the root using each method, the results can be
-summarized in the following table:
+After approximating the root using each method, the results can be summarized in the following table:
 
-``` r
+```{r, echo = FALSE}
 df <- data.frame(
   Method = c('Bisection', 'Secant', 'Newton', 'Fisher'),
   Estimate = formatC(unname(purrr::map_dbl(mresults, ~ .x$estimate)),
@@ -142,5 +145,7 @@ df <- data.frame(
                       scientific = FALSE)
 )
 
-
+gt(df)
 ```
+
+Every method approximates the root to the same precision as `uniroot()`.
